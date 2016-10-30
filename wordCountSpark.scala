@@ -1,0 +1,6 @@
+val bookRDD = sc.textFile("hdfs:///tmp/book/98.txt")
+val wordsRDD = bookRDD.flatMap(_.split(' ')).filter(_ != "")
+val wordPairRDD = wordsRDD.map((_,1))
+var countedWordsRDD = wordPairRDD.reduceByKey(_+_)
+countedWordsRDD = countedWordsRDD.sortBy(_._2, ascending=false)
+countedWordsRDD.saveAsTextFile("hdfs:///tmp/spark_wc_output")
