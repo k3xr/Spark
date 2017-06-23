@@ -1,5 +1,7 @@
 import spark.implicits._
 
+// https://dumps.wikimedia.org/other/pagecounts-raw/2010/2010-08/
+
 val pagecounts = sc.textFile("pagecounts-20100806-030000")
 
 val pagesTuples = pagecounts.map[(String, String, Long, Long)]((s: String) => {
