@@ -1,13 +1,21 @@
-import org.apache.spark.SparkContext
 import org.apache.spark.SparkConf
+import org.apache.spark.sql.SparkSession
 
 /**
   * Basic Spark example
   */
 object SparkTry {
     def main(args: Array[String]): Unit = {
+
         val config = new SparkConf().setAppName("anything").setMaster("local")
-        val sc = new SparkContext(config)
+
+        val spark = SparkSession
+            .builder()
+            .config(config)
+            .getOrCreate()
+
+        val sc = spark.sparkContext
+
         val numbers = Array(1 to 50:_*)
         val oneRDD = sc.parallelize(numbers)
         oneRDD.count
