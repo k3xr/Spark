@@ -2,10 +2,11 @@ import org.apache.spark.{SparkConf, SparkContext}
 import util.Random
 
 /**
-  *
+  * RDD partitions example
   */
 object RandomSampling {
     def main(args: Array[String]): Unit = {
+
         // Generate 1 million Gaussian random numbers
         val config = new SparkConf().setAppName("anything").setMaster("local")
         val sc = new SparkContext(config)
@@ -18,6 +19,10 @@ object RandomSampling {
         val ngaussRDD2 = ngaussRDD.filter(x => x > 4.0)
         println(ngaussRDD2.count)
         println(ngaussRDD2.partitions.length)
+
+        // Increased to 10 partitions
+        val ngaussRDD3 = ngaussRDD2.repartition(10)
+        println(ngaussRDD3.partitions.length)
 
     }
 }
