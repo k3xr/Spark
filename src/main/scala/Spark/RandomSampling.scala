@@ -1,5 +1,8 @@
+package Spark
+
 import org.apache.spark.{SparkConf, SparkContext}
-import util.Random
+
+import scala.util.Random
 
 /**
   * RDD partitions example
