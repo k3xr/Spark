@@ -2,10 +2,10 @@ package Spark
 
 /**
   *
-  * @param project_name
-  * @param page_title
-  * @param num_requests
-  * @param content_size
+  * @param project_name name of the project
+  * @param page_title title of the page
+  * @param num_requests number of requests
+  * @param content_size size of the content
   */
 case class Page(
                    project_name: String,
