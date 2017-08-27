@@ -1,2 +1,2 @@
 # Scala & Spark 
-Scala and Spark tests
+Scala and Spark learning repo
