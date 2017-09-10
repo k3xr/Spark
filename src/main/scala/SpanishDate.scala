@@ -1,4 +1,4 @@
-import java.util.{Date, Locale}
+import java.util.Locale
 import java.text.DateFormat._
 
 /**
@@ -6,7 +6,7 @@ import java.text.DateFormat._
   */
 object SpanishDate {
     def main(args: Array[String]) {
-        val now = new Date
+        val now = new java.util.Date()
         val spanish = new Locale("es", "ES")
         val df = getDateInstance(LONG, spanish)
         println(df format now)
