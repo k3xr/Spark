@@ -2,6 +2,7 @@ package Spark
 
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions._
 
 /**
   * Spark Test with SQL
@@ -83,14 +84,13 @@ object SparkSQL {
             .sort(pagesDF.col("num_requests").desc)
             .show(5)
 
-        //        pagesDF
-        //            .filter($"project_name" === "en")
-        //            .groupBy("project_name")
-        //            .agg(sum(pagesDF.col("content_size")).alias("sum_content_size"),
-        //                $"max(content_size)".alias("max_content_size"),
-        //                $"min(content_size)".alias("min_content_size"))
-        //            .collect()(0).getLong(1)
-
-
+        pagesDF
+            .filter($"project_name" === "en")
+            .groupBy("project_name")
+            .agg(sum("content_size").alias("sum_content_size"),
+                max("content_size").alias("max_content_size"),
+                min("content_size").alias("min_content_size"))
+            .collect()
+            .foreach(println)
     }
 }
