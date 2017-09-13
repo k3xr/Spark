@@ -62,26 +62,34 @@ object SparkSQL {
         // DataSet API
         pagesDF.count
 
-        pagesDF.select("project_name").distinct.collect().map(_.getString(0))
+        pagesDF
+            .select("project_name")
+            .distinct
+            .collect()
+            .map(_.getString(0))
+            .foreach(println)
 
-//        pagesDF
-//            .filter("project_name === en")
-//            .groupBy("project_name")
-//            .sum("content_size")
-//            .collect()(0).getLong(1)
-//
-//        pagesDF
-//            .filter("project_name === en")
-//            .sort(pagesDF.col("num_requests").desc)
-//            .show(5)
-//
-//        pagesDF
-//            .filter("project_name === en")
-//            .groupBy("project_name")
-//            .agg(sum("content_size").as("sum_content_size"),
-//                max("content_size").as("max_content_size"),
-//                min("content_size").as("min_content_size"))
-//            .collect()(0).getLong(1)
+        println(
+            pagesDF
+                .filter($"project_name" === "en")
+                .groupBy("project_name")
+                .sum("content_size")
+                .collect()(0)
+                .getLong(1)
+        )
+
+        pagesDF
+            .filter($"project_name" === "en")
+            .sort(pagesDF.col("num_requests").desc)
+            .show(5)
+
+        //        pagesDF
+        //            .filter($"project_name" === "en")
+        //            .groupBy("project_name")
+        //            .agg(sum(pagesDF.col("content_size")).alias("sum_content_size"),
+        //                $"max(content_size)".alias("max_content_size"),
+        //                $"min(content_size)".alias("min_content_size"))
+        //            .collect()(0).getLong(1)
 
 
     }
