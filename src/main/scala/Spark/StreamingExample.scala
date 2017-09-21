@@ -4,7 +4,7 @@ import org.apache.spark._
 import org.apache.spark.streaming._
 
 /**
-  *
+  * https://spark.apache.org/docs/latest/streaming-programming-guide.html
   */
 object StreamingExample {
 
@@ -28,8 +28,11 @@ object StreamingExample {
         // Print the first ten elements of each RDD generated in this DStream to the console
         wordCounts.print()
 
-        ssc.start()             // Start the computation
-        ssc.awaitTermination()  // Wait for the computation to terminate
+        // Start the computation
+        ssc.start()
+
+        // Wait for the computation to terminate
+        ssc.awaitTermination()
 
     }
 }
