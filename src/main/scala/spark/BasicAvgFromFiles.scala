@@ -1,7 +1,7 @@
 /**
   * Illustrates loading a directory of files
   */
-package Spark
+package spark
 
 import org.apache.spark._
 

@@ -1,4 +1,4 @@
-package Spark
+package spark
 
 import org.apache.spark.SparkConf
 import org.apache.spark.sql._
