@@ -13,6 +13,7 @@ import scala.util.Random
   */
 object ReadParquet {
   def main(args: Array[String]): Unit = {
+
     // Spark Configuration
     val conf = new SparkConf()
       .setAppName("IgniteRDDExample")
@@ -36,34 +37,31 @@ object ReadParquet {
     // Defines spring cache Configuration path.
     val CONFIG = "example-shared-rdd.xml"
 
+    val igniteContext = new IgniteContext(sparkContext, CONFIG, false)
+
     Random.setSeed(6789)
     val ngaussRDD = sparkContext.parallelize(1 to 100000, 10).map(i => (i, Random.nextGaussian.toInt))
     val ngaussDF = ngaussRDD.toDF()
 
     ngaussDF.write.parquet("data.parquet")
 
-    val parquetAssAccType = spark.read.parquet("data.parquet").rdd
-
-    // Creates Ignite context with above configuration.
-    val igniteContext = new IgniteContext(sparkContext, CONFIG, false)
+    val parquetDataRDD = spark.read.parquet("data.parquet").rdd
 
     // Creates an Ignite Shared RDD of Type (Int,Int) Integer Pair.
     val sharedRDD: IgniteRDD[Int, Int] = igniteContext.fromCache[Int, Int]("sharedRDD")
 
-    // RDD a RDD[Pair[String,String]]
-    val rddPairs:org.apache.spark.rdd.RDD[(Int, Int)] =
-      parquetAssAccType.map(r => (r.getInt(0), r.getInt(1)))
-
+    // RDD to RDD[Int,Int]
+    val rddPairs:org.apache.spark.rdd.RDD[(Int, Int)] = parquetDataRDD.map(r => (r.getInt(0), r.getInt(1)))
     sharedRDD.savePairs(rddPairs)
 
-    val sharedRDD2 = igniteContext.fromCache("associatedAccountType")
+    val sharedRDD2 = igniteContext.fromCache("sharedRDD")
 
     val first = sharedRDD2.take(1)
-    println(first)
+    println(first(0)._1)
 
     igniteContext.close(true)
 
-    // Stop SparkContext.
+    // Stop SparkContext
     sparkContext.stop()
   }
 }
